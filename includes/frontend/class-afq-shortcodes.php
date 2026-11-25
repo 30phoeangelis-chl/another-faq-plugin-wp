@@ -33,7 +33,7 @@ class AFQ_Shortcodes {
      *
      * Con "titulo" se arma en dos columnas: a la izquierda etiqueta, título, texto y
      * botón de contacto; a la derecha las preguntas.
-     * [faq titulo="Resolvemos sus dudas" whatsapp="si" boton="Contacte con un profesional"]
+     * [faq titulo="Resolvemos sus dudas" whatsapp="si" boton="Contactar con un profesional"]
      * "whatsapp" acepta "si" (utiliza el número del botón flotante del tema) o un número;
      * "enlace" acepta cualquier URL y tiene prioridad.
      *
@@ -51,10 +51,10 @@ class AFQ_Shortcodes {
             'titulo'    => '',
             'etiqueta'  => 'Preguntas frecuentes',
             'texto'     => '¿No encuentra su respuesta? Nuestro equipo le responde directamente.',
-            'boton'     => 'Contacte con un profesional',
+            'boton'     => 'Contactar con un profesional',
             'enlace'    => '',
-            'whatsapp'  => '',
-            'contacto'  => 'no',
+            'whatsapp'  => 'si',
+            'contacto'  => 'si',
             'contacto_etiqueta'      => 'Atención directa',
             'contacto_titulo'        => '¿Prefiere hablar con alguien?',
             'contacto_texto'         => 'Un especialista del área de calidad revisa su caso y le responde en horario hábil, sin intermediarios y sin costo.',
@@ -90,7 +90,16 @@ class AFQ_Shortcodes {
 
         $faqs = get_posts( $query_args );
 
-        if ( empty( $faqs ) ) return '';
+        if ( empty( $faqs ) ) {
+            if ( '' === trim( $atts['titulo'] ) ) {
+                return '';
+            }
+
+            return $this->render_two_columns(
+                $atts,
+                '<p class="afq-empty">No hay preguntas frecuentes disponibles por el momento.</p>'
+            );
+        }
 
         $exclusivo = 'no' === strtolower( $atts['exclusivo'] ) ? 'no' : 'si';
 
@@ -132,6 +141,7 @@ class AFQ_Shortcodes {
     private function render_two_columns( $atts, $accordion ) {
         $link = $this->contact_link( $atts );
         $is_whatsapp = false !== strpos( $link, 'wa.me/' );
+        $contact_card_enabled = 'si' === strtolower( trim( $atts['contacto'] ) );
         $follow_up_link = esc_url( $atts['cierre_enlace'] );
 
         ob_start();
@@ -145,18 +155,27 @@ class AFQ_Shortcodes {
                 <?php if ( $atts['texto'] ) : ?>
                     <p class="afq-text"><?php echo esc_html( $atts['texto'] ); ?></p>
                 <?php endif; ?>
-                <?php if ( $link && $atts['boton'] ) : ?>
+                <?php if ( ! $contact_card_enabled && $link && $atts['boton'] ) : ?>
                     <a class="afq-contact<?php echo $is_whatsapp ? ' afq-contact-whatsapp' : ''; ?>" href="<?php echo esc_url( $link ); ?>"<?php echo $is_whatsapp ? ' target="_blank" rel="noopener"' : ''; ?>>
                         <?php if ( $is_whatsapp ) : ?><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><?php endif; ?>
                         <?php echo esc_html( $atts['boton'] ); ?>
                     </a>
                 <?php endif; ?>
-                <?php if ( 'si' === strtolower( trim( $atts['contacto'] ) ) ) : ?>
+                <?php if ( $contact_card_enabled ) : ?>
                     <section class="afq-contact-card" aria-label="<?php echo esc_attr( $atts['contacto_etiqueta'] ); ?>">
                         <div class="afq-contact-card-heading">
-                            <p class="afq-contact-card-label"><?php echo esc_html( $atts['contacto_etiqueta'] ); ?></p>
+                            <p class="afq-contact-card-label">
+                                <i class="fas fa-headset" aria-hidden="true"></i>
+                                <?php echo esc_html( $atts['contacto_etiqueta'] ); ?>
+                            </p>
                             <h3><?php echo esc_html( $atts['contacto_titulo'] ); ?></h3>
-                            <p><?php echo esc_html( $atts['contacto_texto'] ); ?></p>
+                            <p class="afq-contact-card-description"><?php echo esc_html( $atts['contacto_texto'] ); ?></p>
+                            <?php if ( $link && $atts['boton'] ) : ?>
+                                <a class="afq-contact<?php echo $is_whatsapp ? ' afq-contact-whatsapp' : ''; ?>" href="<?php echo esc_url( $link ); ?>"<?php echo $is_whatsapp ? ' target="_blank" rel="noopener"' : ''; ?>>
+                                    <i class="fas fa-headset" aria-hidden="true"></i>
+                                    <?php echo esc_html( $atts['boton'] ); ?>
+                                </a>
+                            <?php endif; ?>
                         </div>
                         <dl class="afq-contact-details">
                             <?php
@@ -234,8 +253,11 @@ class AFQ_Shortcodes {
             return '';
         }
 
-        $number = 'si' === $wa ? get_theme_mod( 'gob_whatsapp_number', '' ) : $wa;
+        $number = 'si' === $wa ? get_theme_mod( 'gob_whatsapp_number', '56971657092' ) : $wa;
         $number = preg_replace( '/\D/', '', (string) $number );
+        if ( 'si' === $wa && ! $number ) {
+            $number = '56971657092';
+        }
 
         return $number ? 'https://wa.me/' . $number : '';
     }

@@ -37,8 +37,11 @@ Otros atributos:
 
 ### Dos columnas con contacto
 
-Con `titulo`, el FAQ se arma en dos columnas: a la izquierda etiqueta, título,
-texto y un botón de contacto; a la derecha las preguntas. En celular se apila.
+Con `titulo`, el FAQ se arma en dos columnas: a la izquierda aparecen el título,
+el texto y la tarjeta de contacto directo; a la derecha, las preguntas. En
+celular se apila. La tarjeta queda habilitada por defecto. Si todavía no hay
+preguntas publicadas, se muestra un aviso y la tarjeta de contacto permanece
+visible.
 
 ```
 [faq titulo="Resolvemos sus dudas sobre la certificación" whatsapp="si"]
@@ -49,17 +52,19 @@ texto y un botón de contacto; a la derecha las preguntas. En celular se apila.
 | `titulo` | título de la columna izquierda; activa las dos columnas | vacío (solo acordeón) |
 | `etiqueta` | texto pequeño sobre el título | `Preguntas frecuentes` |
 | `texto` | párrafo bajo el título | `¿No encuentra su respuesta? Nuestro equipo le responde directamente.` |
-| `boton` | texto del botón | `Contacte con un profesional` |
-| `whatsapp` | `si` (número del botón flotante del tema) o un número con código de país | vacío |
+| `boton` | texto del botón | `Contactar con un profesional` |
+| `whatsapp` | `si` (número del tema o `56971657092` como alternativa) o un número con código de país | `si` |
 | `enlace` | cualquier URL para el botón; tiene prioridad sobre `whatsapp` | vacío |
 
 El botón solo aparece si hay `enlace` o `whatsapp`.
 
 ### Tarjeta de contacto y cierre
 
-El diseño de dos columnas puede incluir la tarjeta de contacto directo y un
-enlace final de evaluación. Ambos son opcionales; los datos de contacto usan
-los valores de ChileHalal y se pueden reemplazar con atributos del shortcode:
+La tarjeta muestra la etiqueta «Atención directa», el título, la descripción y
+el botón de contacto, con el diseño del sitio de referencia. Se muestra por
+defecto al usar `titulo`; indique `contacto="no"` para ocultarla. El cierre con
+enlace de evaluación es opcional. Los datos de la tarjeta usan los valores de
+ChileHalal y se pueden reemplazar con atributos del shortcode:
 
 ```
 [faq etiqueta="Preguntas frecuentes" titulo="Resolvemos sus dudas sobre la certificación" texto="¿No encuentra su respuesta? Nuestro equipo le responde directamente." whatsapp="si" contacto="si" cierre_enlace="https://www.chilehalal.cl/formulario-certificacion/"]

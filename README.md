@@ -55,6 +55,25 @@ texto y un botón de contacto; a la derecha las preguntas. En celular se apila.
 
 El botón solo aparece si hay `enlace` o `whatsapp`.
 
+### Tarjeta de contacto y cierre
+
+El diseño de dos columnas puede incluir la tarjeta de contacto directo y un
+enlace final de evaluación. Ambos son opcionales; los datos de contacto usan
+los valores de ChileHalal y se pueden reemplazar con atributos del shortcode:
+
+```
+[faq etiqueta="Preguntas frecuentes" titulo="Resolvemos sus dudas sobre la certificación" texto="¿No encuentra su respuesta? Nuestro equipo le responde directamente." whatsapp="si" contacto="si" cierre_enlace="https://www.chilehalal.cl/formulario-certificacion/"]
+```
+
+`contacto="si"` muestra el panel con teléfono, correo, horario y nota. Se puede
+personalizar mediante `contacto_etiqueta`, `contacto_titulo`, `contacto_texto`,
+`telefono`, `correo`, `horario_semana`, `horario_horas`, `horario_viernes`,
+`horario_viernes_horas` y `contacto_nota`. Usa un valor vacío para ocultar un
+dato.
+
+El cierre aparece únicamente si se indica `cierre_enlace`; `cierre_titulo`,
+`cierre_texto` y `cierre_boton` permiten personalizar su contenido.
+
 ### Aspecto y SEO
 
 - Cada pregunta es una tarjeta numerada; la abierta se destaca con fondo y borde.

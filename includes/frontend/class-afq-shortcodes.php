@@ -33,8 +33,8 @@ class AFQ_Shortcodes {
      *
      * Con "titulo" se arma en dos columnas: a la izquierda etiqueta, título, texto y
      * botón de contacto; a la derecha las preguntas.
-     * [faq titulo="Resolvemos tus dudas" whatsapp="si" boton="Contacta con un profesional"]
-     * "whatsapp" acepta "si" (usa el número del botón flotante del tema) o un número;
+     * [faq titulo="Resolvemos sus dudas" whatsapp="si" boton="Contacte con un profesional"]
+     * "whatsapp" acepta "si" (utiliza el número del botón flotante del tema) o un número;
      * "enlace" acepta cualquier URL y tiene prioridad.
      *
      * @param array $atts Atributos del shortcode.
@@ -50,8 +50,8 @@ class AFQ_Shortcodes {
             'exclusivo' => 'si',
             'titulo'    => '',
             'etiqueta'  => 'Preguntas frecuentes',
-            'texto'     => '¿No encuentras tu respuesta? Nuestro equipo te responde directamente.',
-            'boton'     => 'Contacta con un profesional',
+            'texto'     => '¿No encuentra su respuesta? Nuestro equipo le responde directamente.',
+            'boton'     => 'Contacte con un profesional',
             'enlace'    => '',
             'whatsapp'  => '',
             'contacto'  => 'no',
@@ -162,6 +162,7 @@ class AFQ_Shortcodes {
                             <?php
                             $telephone = preg_replace( '/\D/', '', $atts['telefono'] );
                             if ( $telephone ) :
+                                $telephone = '+' . $telephone;
                             ?>
                                 <div>
                                     <dt>Depto. Calidad – Halal</dt>
